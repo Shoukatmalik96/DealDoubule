@@ -3,37 +3,47 @@
     ViewBag.Title = "UpdateAuction";
 }
 
-<h2>UpdateAuction</h2>
-
-<form id="updateForm" method="post">
-    <input type="hidden" name="AuctionID" value="@Model.AuctionID" />
-    <div class="form-group">
-        <label>Title</label>
-        <input type="text" class="form-control" name="Title"  value="@Model.Title">
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Auction </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <div class="form-group">
-        <label>PictureURL</label>
-        <input type="text" class="form-control" name="PictureURL" value="@Model.PictureURL">
-    </div>
-    <div class="form-group">
-        <label>Description</label>
-        <input type="text" class="form-control" name="Description"  value="@Model.Description">
-    </div>
-    <div class="form-group">
-        <label>ActualAmount</label>
-        <input type="text" class="form-control" name="ActualAmount" value="@Model.ActualAmount">
-    </div>
-    <div class="form-group">
-        <label>StartingTime</label>
-        <input type="date" class="form-control" name="StartingDate" value="@Model.StartingDate">
-    </div>
-    <div class="form-group">
-        <label>EndingTime</label>
-        <input type="date" class="form-control" name="EndingDate" value="@Model.EndingDate">
-    </div>
-    <button type="button" class="btn btn-primary" id="saveButton">Save</button>
-</form>
-
+    <form id="updateForm" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="AuctionID" value="@Model.AuctionID" />
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="Title" value="@Model.Title">
+            </div>
+            <div class="form-group">
+                <label>PictureURL</label>
+                <input type="text" class="form-control" name="PictureURL" value="@Model.PictureURL">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" name="Description" value="@Model.Description">
+            </div>
+            <div class="form-group">
+                <label>ActualAmount</label>
+                <input type="text" class="form-control" name="ActualAmount" value="@Model.ActualAmount">
+            </div>
+            <div class="form-group">
+                <label>StartingTime</label>
+                <input type="date" class="form-control" name="StartingDate" value="@Model.StartingDate">
+            </div>
+            <div class="form-group">
+                <label>EndingTime</label>
+                <input type="date" class="form-control" name="EndingDate" value="@Model.EndingDate">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="saveButton" class="btn btn-primary"><i class="far fa-save"></i> Save changes</button>
+        </div>
+    </form>
+</div>
 <script>
     $("#saveButton").click(function () {
        
@@ -43,6 +53,7 @@
             data: $("#updateForm").serialize()
         })
             .done(function (response) {
+              
                 $("#listingArea").html(response);
             });
     })

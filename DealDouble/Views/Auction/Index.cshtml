@@ -3,73 +3,131 @@
     ViewBag.Title = "Index";
 }
 
-<div id="listingArea">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Actual Amount</th>
-                <th scope="col">Starting Date</th>
-                <th scope="col">Ending Date</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Auctions != null && Model.Auctions.Count > 0)
-            {
-                foreach (var auction in Model.Auctions)
-                {
-
-                    <tr>
-                        <td>@auction.Title</td>
-                        <td>@auction.Description</td>
-                        <td>@auction.ActualAmount</td>
-                        <td>@auction.StartingDate</td>
-                        <td>@auction.EndingDate</td>
-                        <td>
-                            <button @*href="@Url.Action("UpdateAuction","Auction",new { ID=auction.AuctionID})"*@ value="edit" onclick="UpdateAuction(this,@auction.AuctionID)">Edit</button>
-                            <button @*href="@Url.Action("DeleteAuction","Auction",new { ID=auction.AuctionID})"*@ value="delete" onclick="UpdateAuction(this,@auction.AuctionID)">Delete</button>
-                        </td>
-                    </tr>
-                }
-
-            }
-            else
-            {
-
-                <div>
-                    <div class="alert alert-primary" role="alert">
-                        No Article Exist !
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <h5><i>Auctions</i></h5>
+            </div>
+            <div class="col-md-10">
+                <div class="btn-toolbar justify-content-end" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group" role="group" aria-label="First group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search Auctions........ !" aria-label="Input group example" aria-describedby="btnGroupAddon2">
+                            <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Choose auction Category ....</option>
+                                <option value="1">Men</option>
+                                <option value="2">Women</option>
+                                <option value="3">Kids</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary"> <i class="fas fa-trash-alt"></i> Clear</button>
+                        <button type="button" class="btn btn-outline-secondary"> <i class="fas fa-power-off"></i> Reset</button>
+                        <button type="button" class="btn btn-outline-info"><i class="fas fa-search"></i> Search</button>
                     </div>
                 </div>
+            </div>
 
-            }
-        </tbody>
-    </table>
-
-    <button id="newBtn">Create New Auction</button>
-
-    <div id="contentArea">
-
+        </div>
+        <hr />
     </div>
+    
+<!--Listing  Area Start-->
+    <div id="listingArea">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actual Amount</th>
+                    <th scope="col">Starting Date</th>
+                    <th scope="col">Ending Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Auctions != null && Model.Auctions.Count > 0)
+                {
+                    foreach (var auction in Model.Auctions)
+                    {
 
-    <script>
-    $("#newBtn").click(function () {
+                        <tr>
+                            <td>@auction.Title</td>
+                            <td>@auction.Description</td>
+                            <td>@auction.ActualAmount</td>
+                            <td>@auction.StartingDate</td>
+                            <td>@auction.EndingDate</td>
+                            <td>
+                                <button class="btn btn-success btn-sm" value="new" onclick="AuctionDML(this,@auction.AuctionID)" data-toggle="modal" data-target="#auctionModal"> <i class="far fa-save"> New </i> </button>
+                                <button class="btn btn-primary btn-sm" value="edit" onclick="AuctionDML(this,@auction.AuctionID)" data-toggle="modal" data-target="#auctionModal"> <i class="fas fa-pen"> Update</i> </button>
+                                <button class="btn btn-danger btn-sm" value="delete" onclick="AuctionDML(this,@auction.AuctionID)" data-toggle="modal" data-target="#auctionModal"><i class="fas fa-trash-alt"> Delete </i></button>
+                            </td>
+                        </tr>
 
-        $.ajax({
-            method: "GET",
-            url: "@Url.Action("AddAuction","Auction")",
 
-        })
-            .done(function (response) {
-                $("#contentArea").html(response);
-            });
-    })
+                    }
 
-    function UpdateAuction(btn,articleId) {
+                }
+                else
+                {
 
-        if ($(btn).attr("value")=='edit') {
+                    <div>
+                        <div class="alert alert-primary" role="alert">
+                            No Article Exist !
+                        </div>
+                    </div>
+
+                }
+            </tbody>
+        </table>
+        <!--pagination section start here-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!--pagination section end here-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="auctionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!--Content Area start-->
+            <div class="modal-dialog" role="document" id="contentArea">
+
+            </div>
+            <!--Content Area end-->
+        </div>
+
+
+
+
+        <script>
+    function AuctionDML(btn,articleId) {
+
+        if ($(btn).attr("value") == 'new') {
+               $.ajax({
+                  method: "GET",
+                  url: "@Url.Action("AddAuction","Auction")",
+
+              })
+               .done(function (response) {
+                   $("#contentArea").html(response);
+               });
+        }
+        else if ($(btn).attr("value")=='edit') {
 
             $.ajax({
                 method: "GET",
@@ -77,24 +135,24 @@
                 data: { ID: articleId }
 
             })
-                .done(function (response) {
-                    $("#contentArea").html(response);
-                });
+             .done(function (response) {
+                 $("#contentArea").html(response);
+             });
 
         } else if ($(btn).attr("value") == 'delete') {
 
              $.ajax({
-                method: "GET",
-                url: "@Url.Action("DeleteAuction","Auction")",
-                data: { ID: articleId }
+                 method: "get",
+                 url: "@Url.Action("DeleteAuction","Auction")",
+                 data: { ID : articleId }
+             })
+             .done(function (response) {
+                 $("#contentArea").html(response);
+             });
 
-            })
-                .done(function (response) {
-                    $("#contentArea").html(response);
-                });
         }
     }
 
-    </script>
-</div>
+        </script>
+    </div>
 
