@@ -77,5 +77,53 @@ namespace DealDouble.Services
 			}
 
 		}
+
+		/// <summary>
+		///  Search Auction Implementation 
+		/// </summary>
+		/// <param name="CategoryID"></param>
+		/// <param name="SearchTerm"></param>
+		/// <param name="pageNo"></param>
+		/// <param name="pageSize"></param>
+		/// <returns></returns>
+		public List<Auction> SearchAuction(int ? CategoryID, string SearchTerm , int ? pageNo, int ? pageSize) 
+		{
+			pageNo = pageNo ?? 1;
+			pageSize = pageSize ?? 2;
+			List<Auction> auctions = new List<Auction>();
+
+            using (var repo = DataContextHelper.GetPPDataContext())
+            {
+				var ppsql = PetaPoco.Sql.Builder.Select(@"*").From("Auctions");
+                if (CategoryID != null )
+                {
+					auctions = repo.Fetch<Auction>(ppsql);
+				}
+                else if (!string.IsNullOrEmpty(SearchTerm))
+                {
+					ppsql.Where("auction.Title.ToLower() == @0", SearchTerm.ToLower());
+					auctions = repo.Fetch<Auction>(ppsql);
+				}
+
+				auctions = repo.Fetch<Auction>(ppsql).ToList();
+				var skipCount = (pageNo.Value - 1) * pageSize;
+				auctions = auctions.Skip(Convert.ToInt32(skipCount)).Take(Convert.ToInt32(pageSize)).ToList();
+			}
+			return auctions;
+		}
+
+		/// <summary>
+		/// Get Auction Count from database 
+		/// </summary>
+		/// <returns></returns>
+		public int  GetAuctionCout()
+		{
+			int auctioncout = 0; 
+			using (var repo = DataContextHelper.GetPPDataContext())
+			{
+				 auctioncout = repo.ExecuteScalar<int>("SELECT COUNT(*) FROM Auctions");
+			}
+			return auctioncout;
+		}
 	}
 }

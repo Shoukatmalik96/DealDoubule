@@ -12,20 +12,31 @@ namespace DealDouble.Controllers
     public class AuctionController : Controller
     {
         // GET: Auction
-        public ActionResult Index()
+        public ActionResult Index(int ? categoryID, string searchTerm , int ?  pageNo, int ? pageSize)
         {
             AuctionViewModel model = new AuctionViewModel();
-            model.Auctions = AuctionsServices.Instance.GetAuctions();
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView(model);
-            }
-            else
-            {
-                return View(model);
-            }
+            pageNo = pageNo ?? 1;
+            pageSize = pageSize ?? 2;
+            model.pageNo = pageNo;
+            model.pageSize = pageSize;
+            model.searchTerm = searchTerm;
+            model.categoryID = categoryID;
+
+            return View(model);
             
         }
+
+        public ActionResult AuctionListing(int? categoryID, string searchTerm, int? pageNo, int? pageSize)
+        {
+            AuctionListingViewModel model = new AuctionListingViewModel();
+            pageNo = pageNo ?? 1;
+            pageSize = pageSize ?? 2;
+            model.totalItems = AuctionsServices.Instance.GetAuctionCout();
+            model.Auctions = AuctionsServices.Instance.SearchAuction(categoryID, searchTerm, pageNo, pageSize);
+            model.Pager = new BaseViewModel.Pager(model.totalItems, pageNo, Convert.ToInt32(pageSize));
+            return PartialView(model);
+        }
+
         [HttpGet]
         public ActionResult AddAuction()
         {
