@@ -1,0 +1,26 @@
+﻿@model DealDouble.DataServices.Auction
+@{
+    ViewBag.Title = "DeleteAuction";
+}
+
+
+<h2>Are you sure you want to Delete this auctions </h2>
+
+<form id="deleteForm" method="post">
+    <input type="hidden" name="AuctionID" value="@Model.AuctionID" />
+    <button type="button" class="btn btn-primary" id="deleteButton">Delete</button>
+</form>
+
+<script>
+    $("#deleteButton").click(function () {
+        debugger;
+        $.ajax({
+            method: "post",
+            url: "@Url.Action("DeleteAuction","Auction")",
+            data: $("#deleteForm").serialize()
+        })
+            .done(function (response) {
+                $("#listingArea").html(response);
+            });
+    })
+</script>
