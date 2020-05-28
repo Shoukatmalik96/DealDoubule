@@ -44,9 +44,9 @@ namespace DealDouble.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAuction(Auction auction)
+        public ActionResult AddAuction(AuctionsEntityViewModel model)
         {
-            AuctionsServices.Instance.SaveAuctions(auction);
+           // AuctionsServices.Instance.SaveAuctions(auction);
             return RedirectToAction("index");
         }
 

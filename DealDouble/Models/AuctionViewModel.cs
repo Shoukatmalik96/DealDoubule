@@ -23,4 +23,16 @@ namespace DealDouble.Models
         public Pager Pager { get; set; }
         public int totalItems { get; set; }
     }
+
+    public class AuctionsEntityViewModel 
+    {
+       public int AuctionID { get; set; }
+       public string Title { get; set; }
+       public string AuctionPictures { get; set; }
+       public string Description { get; set; }
+       public decimal? ActualAmount { get; set; }
+       public DateTime? StartingDate { get; set; }
+       public DateTime? EndingDate { get; set; }
+
+    }
 }
